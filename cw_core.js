@@ -1,15 +1,26 @@
 /* ---------- Core analyzer (calculation unchanged; output bilingual) ---------- */
 var cw_analyze = function (f, mod, index, nat) {
-  var el = Array.apply(undefined, f.getElementsByTagName('input')), mx = Math.max, mi = Math.min;
+  var mx = Math.max, mi = Math.min;
 
   return function () {
+    var traitInputs = Array.prototype.slice.call(f.querySelectorAll('#traitsGrid input[type="radio"]'));
     var
       status = ['', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       actual = status.slice(),
-      l, i, j, radio = [], total = 0, a_total = 0;
+      l, i, j, radio = Array(24).fill(0), total = 0, a_total = 0;
 
-    l = -3; while ((l += 3) < 72)
-      radio[l / 3] = el[l].checked ? 1 : el[l + 1].checked ? 0 : 2;
+    // Traits may not be rendered yet (e.g., before buildTraits runs); guard the lookup.
+    if (traitInputs.length >= 72) {
+      for (var t = 0; t < 24; t++) {
+        var base = t * 3;
+        var left = traitInputs[base];
+        var mid = traitInputs[base + 1];
+        var right = traitInputs[base + 2];
+        if (left && left.checked) radio[t] = 1;
+        else if (mid && mid.checked) radio[t] = 0;
+        else if (right && right.checked) radio[t] = 2;
+      }
+    }
 
     l = -1; while (++l < 27) {
       if (3 > l)
