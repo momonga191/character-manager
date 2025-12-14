@@ -1,8 +1,9 @@
 /* ---------- Core analyzer (calculation unchanged; output bilingual) ---------- */
 var cw_analyze = function (f, mod, index, nat) {
-  var el = Array.apply(undefined, f.getElementsByTagName('input')), mx = Math.max, mi = Math.min;
+  var mx = Math.max, mi = Math.min;
 
   return function () {
+    var el = Array.apply(undefined, f.getElementsByTagName('input'));
     var
       status = ['', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       actual = status.slice(),
